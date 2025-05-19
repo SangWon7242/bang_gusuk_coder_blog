@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+
+import { BookOpen, FileText, LogIn, NotebookPen } from "lucide-react";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -28,7 +30,8 @@ const Header = () => {
                 href="/posts"
                 className="hover:text-blue-600 transition-colors"
               >
-                글
+                <BookOpen className="inline mr-1 h-4 w-4" />
+                <span>글</span>
               </Link>
             </li>
             <li>
@@ -36,7 +39,8 @@ const Header = () => {
                 href="/posts/write"
                 className="hover:text-blue-600 transition-colors"
               >
-                글 작성
+                <NotebookPen className="inline mr-1 h-4 w-4" />
+                <span>글 작성</span>
               </Link>
             </li>
             <li>
@@ -44,7 +48,8 @@ const Header = () => {
                 href="/my-posts"
                 className="hover:text-blue-600 transition-colors"
               >
-                내 글
+                <FileText className="inline mr-1 h-4 w-4" />
+                <span>내 글</span>
               </Link>
             </li>
             <li>
@@ -52,7 +57,8 @@ const Header = () => {
                 href="/login"
                 className="hover:text-blue-600 transition-colors"
               >
-                로그인
+                <LogIn className="inline mr-1 h-4 w-4" />
+                <span>로그인</span>
               </Link>
             </li>
             <li>
