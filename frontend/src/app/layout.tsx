@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
 
@@ -12,7 +13,13 @@ const Header = () => {
     <header className="bg-white shadow-md">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold text-blue-600">
-          방구석코딩
+          <Image
+            src="/images/logo.jpg"
+            alt="로고"
+            width={50}
+            height={50}
+            priority // 로고는 중요한 요소이므로 priority 추가
+          />
         </Link>
         <nav>
           <ul className="flex space-x-6">
