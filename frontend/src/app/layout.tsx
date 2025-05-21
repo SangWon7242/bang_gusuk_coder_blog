@@ -95,6 +95,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="h-full">
+      <head>
+        <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+      </head>
       <body className="flex flex-col min-h-[100dvh]">
         <Header />
         <main className="flex-grow flex flex-col container mx-auto px-4 py-8">
