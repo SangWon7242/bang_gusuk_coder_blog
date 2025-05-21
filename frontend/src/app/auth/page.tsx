@@ -59,8 +59,14 @@ export default function AuthPage() {
       // AuthContext의 상태 업데이트
       login(userData);
 
-      // 로그인 성공 후 메인 페이지로 리다이렉트
-      router.push("/");
+      // 저장된 리다이렉트 URL이 있는지 확인
+      const redirectUrl = localStorage.getItem("redirectUrl");
+      if (redirectUrl) {
+        localStorage.removeItem("redirectUrl"); // 사용 후 삭제
+        router.push(redirectUrl);
+      } else {
+        router.push("/");
+      }
     } catch (error) {
       console.error("Error during authentication:", error);
       router.push("/login");

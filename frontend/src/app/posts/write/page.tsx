@@ -1,12 +1,28 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Editor from "@monaco-editor/react";
+import { useAuth } from "@/context/AuthContext";
 
 export default function WritePage() {
   const router = useRouter();
-  const [content, setContent] = useState("// 여기에 코드를 작성하세요");
+  const { isLoggedIn } = useAuth(); // 로그인 상태 확인
+  const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
+
+  // 로그인 상태 확인 및 리다이렉트
+  useEffect(() => {
+    if (!isLoggedIn) {
+      // 현재 페이지 URL을 로컬 스토리지에 저장
+      localStorage.setItem("redirectUrl", "/posts/write");
+      router.push("/login");
+    }
+  }, [isLoggedIn, router]);
+
+  // 로그인하지 않은 상태라면 페이지 렌더링하지 않음
+  if (!isLoggedIn) {
+    return null;
+  }
 
   const handleEditorChange = (value: string | undefined) => {
     if (value) {
@@ -30,9 +46,7 @@ export default function WritePage() {
       return;
     }
 
-    // 기본 텍스트를 제외한 실제 내용이 있는지 확인
-    const defaultContent = "// 여기에 코드를 작성하세요";
-    if (!content.trim() || content === defaultContent) {
+    if (!content.trim()) {
       alert("내용을 입력해주세요.");
       return;
     }
@@ -68,7 +82,7 @@ export default function WritePage() {
           theme="vs-white"
           options={{
             fontSize: 16,
-            minimap: { enabled: true },
+            minimap: { enabled: false },
             scrollBeyondLastLine: false,
             automaticLayout: true,
             wordWrap: "on",
