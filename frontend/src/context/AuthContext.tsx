@@ -19,38 +19,45 @@ interface AuthContextType {
   isLoggedIn: boolean;
   user: User | null;
   login: (userData: User) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
+  isLoading: boolean; // 로딩 상태 추가
 }
 
 const AuthContext = createContext<AuthContextType>({
   isLoggedIn: false,
   user: null,
   login: () => {},
-  logout: () => {},
+  logout: async () => {},
+  isLoading: true, // 초기값은 true
 });
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const router = useRouter();
 
   useEffect(() => {
     // 페이지 로드 시 로컬 스토리지에서 사용자 정보 확인
-    const token = localStorage.getItem("kakao_token");
-    const userData = localStorage.getItem("user_data");
+    const initializeAuth = () => {
+      const token = localStorage.getItem("kakao_token");
+      const userData = localStorage.getItem("user_data");
 
-    if (token && userData) {
-      try {
-        const parsedUserData = JSON.parse(userData);
-        setIsLoggedIn(true);
-        setUser(parsedUserData);
-      } catch (error) {
-        console.error("Failed to parse user data:", error);
-        // 잘못된 데이터인 경우 로컬 스토리지 클리어
-        localStorage.removeItem("kakao_token");
-        localStorage.removeItem("user_data");
+      if (token && userData) {
+        try {
+          const parsedUserData = JSON.parse(userData);
+          setIsLoggedIn(true);
+          setUser(parsedUserData);
+        } catch (error) {
+          console.error("Failed to parse user data:", error);
+          localStorage.removeItem("kakao_token");
+          localStorage.removeItem("user_data");
+        }
       }
-    }
+      setIsLoading(false); // 초기화 완료 후 로딩 상태 false로 설정
+    };
+
+    initializeAuth();
   }, []);
 
   const login = (userData: User) => {
@@ -91,7 +98,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, user, login, logout }}>
+    <AuthContext.Provider
+      value={{ isLoggedIn, user, login, logout, isLoading }}
+    >
       {children}
     </AuthContext.Provider>
   );

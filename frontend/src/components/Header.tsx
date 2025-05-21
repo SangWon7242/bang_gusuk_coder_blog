@@ -5,11 +5,30 @@ import { BookOpen, FileText, NotebookPen, LogOut } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 export default function Header() {
-  const { isLoggedIn, user, logout } = useAuth();
+  const { isLoggedIn, user, logout, isLoading } = useAuth();
 
   const handleLogout = async () => {
     await logout();
   };
+
+  // 로딩 중일 때는 메뉴 표시하지 않음
+  if (isLoading) {
+    return (
+      <header className="bg-white shadow-md">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <Link href="/" className="text-2xl font-bold text-blue-600">
+            <Image
+              src="/images/logo.jpg"
+              alt="로고"
+              width={50}
+              height={50}
+              priority
+            />
+          </Link>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header className="bg-white shadow-md">
