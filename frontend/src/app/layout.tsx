@@ -2,7 +2,6 @@ import { AuthProvider } from "@/context/AuthContext";
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 
-import { BookOpen, FileText, LogIn, NotebookPen } from "lucide-react";
 import "./globals.css";
 
 export const metadata: Metadata = {

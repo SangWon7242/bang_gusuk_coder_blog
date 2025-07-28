@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export default function PostsPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -21,10 +21,15 @@ export default function PostsPage() {
   }, []);
 
   if (isLoading) {
-    return <div className="flex justify-center items-center min-h-screen">로딩중...</div>;
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        로딩중...
+      </div>
+    );
   }
 
   return (
     // 게시글 목록 렌더링
+    <div>Posts</div>
   );
 }
